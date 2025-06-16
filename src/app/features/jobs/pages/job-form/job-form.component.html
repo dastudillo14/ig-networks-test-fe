@@ -1,0 +1,78 @@
+<div class="container mx-auto p-4">
+  <div class="max-w-2xl mx-auto">
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h1 class="text-2xl font-bold">{{ isEditMode ? 'Edit Job' : 'Create Job' }}</h1>
+
+      <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="max-w-2xl">
+        <div class="grid grid-cols-1 gap-4">
+          <!-- Title -->
+          <div class="field">
+            <label for="title" class="block mb-2">Title</label>
+            <input id="title" type="text" pInputText formControlName="title" class="w-full"
+              [ngClass]="{'ng-invalid ng-dirty': jobForm.get('title')?.invalid && jobForm.get('title')?.touched}" />
+            @if(jobForm.get('title')?.invalid && jobForm.get('title')?.touched) {
+            <small class="text-red-500">
+              @if(jobForm.get('title')?.errors?.['required']) {
+              Title is required
+              }
+              @if(jobForm.get('title')?.errors?.['minlength']) {
+              Title must be at least 3 characters
+              }
+            </small>
+            }
+          </div>
+
+          <!-- Description -->
+          <div class="field">
+            <label for="description" class="block mb-2">Description</label>
+            <p-editor id="description" formControlName="description" rows="5" [style]="{ height: '200px' }"
+              class="w-full"
+              [ngClass]="{'ng-invalid ng-dirty': jobForm.get('description')?.invalid && jobForm.get('description')?.touched}"></p-editor>
+            @if(jobForm.get('description')?.invalid && jobForm.get('description')?.touched) {
+            <small class="text-red-500">
+              @if(jobForm.get('description')?.errors?.['required']) {
+              Description is required
+              }
+              @if(jobForm.get('description')?.errors?.['minlength']) {
+              Description must be at least 10 characters
+              }
+            </small>
+            }
+          </div>
+
+          <!-- Location -->
+          <div class="field">
+            <label for="location" class="block mb-2">Location</label>
+            <input id="location" type="text" pInputText formControlName="location" class="w-full"
+              [ngClass]="{'ng-invalid ng-dirty': jobForm.get('location')?.invalid && jobForm.get('location')?.touched}" />
+            @if(jobForm.get('location')?.invalid && jobForm.get('location')?.touched) {
+            <small class="text-red-500">Location is required</small>
+            }
+          </div>
+
+
+
+          <!-- Category -->
+          <div class="field">
+            <label for="category" class="block mb-2">Category</label>
+            <p-dropdown id="category" [options]="categories" formControlName="category" optionLabel="name"
+              optionValue="id" placeholder="Select a category" class="w-full"
+              [ngClass]="{'ng-invalid ng-dirty': jobForm.get('category')?.invalid && jobForm.get('category')?.touched}"></p-dropdown>
+            @if(jobForm.get('category')?.invalid && jobForm.get('category')?.touched) {
+            <small class="text-red-500">Category is required</small>
+            }
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex justify-end gap-2 mt-4">
+          <button pButton type="button" label="Cancel" class="p-button-secondary" (click)="onCancel()"
+            [disabled]="loading"></button>
+          <button pButton type="submit" [label]="isEditMode ? 'Update' : 'Create'" [loading]="loading"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <p-toast></p-toast>

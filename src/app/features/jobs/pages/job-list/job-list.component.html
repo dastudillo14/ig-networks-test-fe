@@ -1,0 +1,121 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-4">Find your next job</h1>
+    <div class="flex items-center gap-4">
+      <form [formGroup]="formFilters" (ngSubmit)="onSearch()" class="flex items-center gap-4">
+        <div class="input-wrapper">
+          <input 
+            pInputText 
+            formControlName="title" 
+            placeholder="Title" 
+            class="w-full"
+          />
+          <button
+            *ngIf="formFilters.get('title')?.value"
+            type="button"
+            class="clear-button"
+            (click)="clearFilter('title')"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="input-wrapper">
+          <input 
+            pInputText 
+            formControlName="location" 
+            placeholder="Location" 
+            class="w-full"
+          />
+          <button
+            *ngIf="formFilters.get('location')?.value"
+            type="button"
+            class="clear-button"
+            (click)="clearFilter('location')"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="input-wrapper">
+          <p-dropdown 
+            formControlName="category" 
+            [options]="categories" 
+            optionLabel="name" 
+            optionValue="id" 
+            placeholder="Category"
+            class="w-full"
+          ></p-dropdown>      
+        </div>
+      </form>
+
+      <p-button 
+        label="Search" 
+        icon="pi pi-search" 
+        styleClass="p-button-primary" 
+        (onClick)="onSearch()"
+        [loading]="loading"
+      ></p-button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="flex justify-center items-center py-8">
+    <p-progressSpinner styleClass="w-8 h-8" strokeWidth="2" animationDuration=".5s"></p-progressSpinner>
+  </div>
+
+  <div *ngIf="!loading" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    @for (job of jobs; track job.id) {
+      <app-job-card [job]="job" (viewDetails)="onViewDetails(job)"></app-job-card>
+    }
+  </div>
+
+  <div *ngIf="!loading && jobs?.length === 0" class="text-center py-8">
+    <p class="text-gray-500">No se encontraron trabajos</p>
+  </div>
+
+  <!-- Paginación -->
+  <div *ngIf="!loading && totalRecords > 0" class="flex justify-content-center mt-4">
+    <p-paginator
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [first]="(currentPage - 1) * rows"
+      (onPageChange)="onPageChange($event)"
+      [showFirstLastIcon]="true"
+      [showPageLinks]="true"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Page {currentPage} of {totalPages}"
+    ></p-paginator>
+  </div>
+</div>
+
+<style>
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.input-wrapper input,
+.input-wrapper p-dropdown {
+  width: 100%;
+  padding-right: 1.5rem;
+}
+
+.clear-button {
+  position: absolute;
+  top: 50%;
+  right: 0.4rem;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #999;
+  padding: 0;
+  z-index: 1;
+}
+
+.clear-button:hover {
+  color: #666;
+}
+</style>

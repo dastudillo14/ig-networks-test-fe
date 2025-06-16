@@ -1,0 +1,87 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+  <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-center mb-4 text-2xl font-bold">Login</h2>
+
+    <form
+      [formGroup]="formGroup"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-3"
+    >
+      <div class="form-group">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-user"></i>
+          </p-inputgroup-addon>
+          <input
+            pInputText
+            formControlName="username"
+            placeholder="Username"
+            [ngClass]="{
+              'ng-invalid':
+                formGroup.get('username')?.invalid &&
+                formGroup.get('username')?.touched
+            }"
+            required
+          />
+        </p-inputgroup>
+        <small
+          class="text-red-500 block mt-1"
+          *ngIf="
+            formGroup.get('username')?.invalid &&
+            formGroup.get('username')?.touched
+          "
+        >
+          <span *ngIf="formGroup.get('username')?.errors?.['required']"
+            >El usuario es requerido</span
+          >
+        </small>
+      </div>
+
+      <div class="form-group">
+        <p-inputgroup>
+          <p-inputgroup-addon>
+            <i class="pi pi-lock"></i>
+          </p-inputgroup-addon>
+          <input
+            pInputText
+            formControlName="password"
+            type="password"
+            placeholder="Password"
+            [ngClass]="{
+              'ng-invalid':
+                formGroup.get('password')?.invalid &&
+                formGroup.get('password')?.touched
+            }"
+            required
+          />
+        </p-inputgroup>
+        <small
+          class="text-red-500 block mt-1"
+          *ngIf="
+            formGroup.get('password')?.invalid &&
+            formGroup.get('password')?.touched
+          "
+        >
+          <span *ngIf="formGroup.get('password')?.errors?.['required']"
+            >La contraseña es requerida</span
+          >
+        </small>
+      </div>
+      <p-button
+        type="submit"
+        label="Login"
+        icon="pi pi-sign-in"
+        styleClass="w-full"
+      ></p-button>
+      <p-button
+        (onClick)="goToRegister()"
+        label="Register"
+        icon="pi pi-user-plus"
+        styleClass="w-full"
+        severity="secondary"
+      ></p-button>
+      <a  routerLink="/jobs" class="text-sm text-gray-500 text-end">Find jobs</a>
+    </form>
+  </div>
+</div>
+<p-toast />

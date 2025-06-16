@@ -1,0 +1,147 @@
+<div class="">
+  <div class="card">
+    <p-table
+      [value]="rowsShow"
+      [paginator]="usePagination"
+      [rows]="limit"
+      [totalRecords]="totalRows"
+      [lazy]="true"
+      [first]="first"
+      (onPage)="handlePageChange($event)"
+      styleClass="p-datatable-sm"
+      [loading]="false"
+      [scrollable]="true"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th *ngFor="let col of columns" [style.width]="col.width">
+            @if (useFilter && col.filter && col.show !== false) {
+              {{ col.header }}
+            <div class="p-input-icon-right">
+              @if (col.filter.type === 'text') {
+              <div class="input-wrapper">
+                <input
+                  pInputText
+                  type="text"
+                  class="p-inputtext-xs"
+                  [placeholder]="col.header"
+                  [ngModel]="col.filter.value"
+                  (ngModelChange)="onFilterChange($event, col)"
+                />
+                <button
+                  *ngIf="col.filter.value"
+                  type="button"
+                  class="clear-button"
+                  (click)="clearFilter(col)"
+                >
+                  ✕
+                </button>
+              </div>
+              } @if (col.filter.type === 'select') {
+              <div class="input-wrapper">
+                <p-dropdown
+                  [options]="getDropdownOptions(col)"
+                  [ngModel]="col.filter.value"
+                  (ngModelChange)="onFilterChange($event, col)"
+                  optionLabel="name"
+                  optionValue="value"
+                  placeholder="Select"
+                [appendTo]="'body'"
+
+                  class="p-inputtext-xs"
+                ></p-dropdown>
+              </div>
+              } @if (col.filter.type === 'date') {
+              <p-datePicker
+                [ngModel]="col.filter.value"
+                (ngModelChange)="onDateRangeChange($event, col)"
+                dateFormat="dd/mm/yy"
+                [placeholder]="'Select date range'"
+                [showButtonBar]="true"
+                [appendTo]="'body'"
+                [showIcon]="true"
+                (onClearClick)="clearFilter(col)"
+
+                [selectionMode]="'range'"
+              ></p-datePicker>
+              }
+            </div>
+            }
+          </th>
+          @if (actions.length > 0) {
+          <th style="width: 100px">Actions</th>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-item>
+        <tr>
+          <td *ngFor="let col of columns">
+            @if (col.show !== false) {
+              @if (col.name.includes('status')) {              
+                <p-tag [value]="getNestedValue(item, col.name)" [severity]="item.status?.color"></p-tag>
+              } @else {
+                {{ getNestedValue(item, col.name) | custom : col.pipe }}              
+              }
+            }
+            
+          </td>
+          @if (actions.length > 0) {
+          <td>
+            <div class="flex gap-2">
+              @for (action of actions; track action) {                
+              <p-button
+                [disabled]="item.active === false"
+                [icon]="action.icon"
+                [styleClass]="action.class"
+                [severity]="action.class"
+                (onClick)="actionClick(action.name, item)"
+                pTooltip="{{ action.name }}"
+                tooltipPosition="top"
+              ></p-button>
+              }
+            </div>
+          </td>
+          }
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td
+            [attr.colspan]="columns.length + (actions.length > 0 ? 1 : 0)"
+            class="text-center p-4"
+          >
+            <div class="flex flex-column align-items-center">              
+              <span class="text-500">No records found</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<!-- Mobile View -->
+<!-- div class="lg:hidden">
+  <p-card *ngFor="let item of rowsShow" class="mb-3">
+    <ng-container *ngFor="let col of columns">
+      <div class="mb-2">
+        <span class="font-semibold">{{ col.header }}:</span>
+        <span class="ml-2">
+          <ng-container *ngIf="col.pipe">
+            {{ getNestedValue(item, col.name) | custom:col.pipe }}
+          </ng-container>
+          <ng-container *ngIf="!col.pipe">
+            {{ getNestedValue(item, col.name) }}
+          </ng-container>
+        </span>
+      </div>
+    </ng-container>
+    <div *ngIf="actions.length > 0" class="flex gap-2 mt-3">
+      <p-button *ngFor="let action of actions" [icon]="action.icon"
+        [styleClass]="action.class" (onClick)="actionClick(action.name, item)"
+        pTooltip="{{action.name}}" tooltipPosition="top"></p-button>
+    </div>
+  </p-card>
+</div -->

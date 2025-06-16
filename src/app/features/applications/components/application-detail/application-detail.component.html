@@ -1,0 +1,63 @@
+@if (application) {
+  <p-dialog 
+
+  [(visible)]="visible" 
+  [style]="{width: '50vw'}" 
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Application Details"
+  (onHide)="closeModal()">
+  
+  <div class="p-4">
+    <div class="detail-row">
+      <div class="detail-label">Job Title</div>
+      <div class="detail-value">{{ application.jobpost.title }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Location</div>
+      <div class="detail-value">{{ application.jobpost.location }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Category</div>
+      <div class="detail-value">{{ application.jobpost.category.name }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Status</div>      
+      <p-tag [value]="application.status.description" [severity]="application.status.color"></p-tag>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Applicant</div>
+      <div class="detail-value">{{ application.applicant.username }}</div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Resume Link</div>
+      <div class="detail-value">
+        <a [href]="application.resume_link" target="_blank" class="text-blue-600 hover:text-blue-800">
+          {{ application.resume_link }}
+        </a>
+      </div>
+    </div>
+
+    <div class="detail-row">
+      <div class="detail-label">Submission Date</div>
+      <div class="detail-value">{{ application.submission_date | date:'medium' }}</div>
+    </div>
+    <div class="detail-row">
+      <div class="detail-label">Experience Detail</div>
+      <div class="detail-value" [innerHTML]="application.experience_detail | html" >      
+      </div>
+    </div>
+
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton pRipple label="Close" icon="pi pi-times" class="p-button-text" (click)="closeModal()"></button>
+  </ng-template>
+</p-dialog> 
+}

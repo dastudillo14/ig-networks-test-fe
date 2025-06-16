@@ -1,0 +1,90 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-50">
+    <div class="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 class="text-center mb-4 text-2xl font-bold">Register</h2>
+        
+        <form [formGroup]="formGroup" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+            <div class="form-group">
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-user"></i>
+                    </p-inputgroup-addon>
+                    <input 
+                        type="text" 
+                        pInputText 
+                        formControlName="username"
+                        placeholder="Enter your username"
+                        [ngClass]="{
+                            'ng-invalid': formGroup.get('username')?.invalid && formGroup.get('username')?.touched
+                        }"                        
+                        required>
+                </p-inputgroup>
+                <small class="text-red-500 block mt-1" *ngIf="formGroup.get('username')?.invalid && formGroup.get('username')?.touched">
+                    <span *ngIf="formGroup.get('username')?.errors?.['required']">Username is required</span>
+                    <span *ngIf="formGroup.get('username')?.errors?.['minlength']">Username must be at least 3 characters</span>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-envelope"></i>
+                    </p-inputgroup-addon>
+                    <input 
+                        type="email" 
+                        pInputText 
+                        formControlName="email"
+                        placeholder="Enter your email"
+                        [ngClass]="{
+                            'ng-invalid': formGroup.get('email')?.invalid && formGroup.get('email')?.touched
+                        }"
+                        required>
+                </p-inputgroup>
+                <small class="text-red-500 block mt-1" *ngIf="formGroup.get('email')?.invalid && formGroup.get('email')?.touched">
+                    <span *ngIf="formGroup.get('email')?.errors?.['required']">Email is required</span>
+                    <span *ngIf="formGroup.get('email')?.errors?.['email']">Please enter a valid email</span>
+                </small>
+            </div>
+
+            <div class="form-group">
+                <p-inputgroup>
+                    <p-inputgroup-addon>
+                        <i class="pi pi-lock"></i>
+                    </p-inputgroup-addon>
+                    <input 
+                        id="password"
+                        type="password" 
+                        pInputText 
+                        formControlName="password"
+                        placeholder="Enter your password"
+                        [ngClass]="{
+                            'ng-invalid': formGroup.get('password')?.invalid && formGroup.get('password')?.touched
+                        }"
+                        required>
+                </p-inputgroup>
+                <small class="text-red-500 block mt-1" *ngIf="formGroup.get('password')?.invalid && formGroup.get('password')?.touched">
+                    <span *ngIf="formGroup.get('password')?.errors?.['required']">Password is required</span>
+                    <span *ngIf="formGroup.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+                </small>
+            </div>
+
+            <p-button 
+                type="submit" 
+                label="Register" 
+                icon="pi pi-user-plus"
+                [loading]="loading"
+                [disabled]="loading || formGroup.invalid"
+                styleClass="w-full">
+            </p-button>
+
+            <p-button
+                (onClick)="goToLogin()"
+                label="Login"
+                icon="pi pi-sign-in"
+                [disabled]="loading"
+                styleClass="w-full"
+                severity="secondary">
+            </p-button>
+        </form>
+    </div>
+</div>
+<p-toast /> 

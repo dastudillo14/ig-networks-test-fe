@@ -1,0 +1,30 @@
+<div class="container-fluid p-4">
+  <div class="mb-4">
+    <h1 class="text-2xl font-bold">{{ isAdmin ? 'Applications Management' : 'My Applications' }}</h1>
+  </div>
+
+  <div class="card">
+    @if (!loading) {
+      <app-table
+        [list]="applications"
+        [columns]="columns"
+        [actions]="actions"
+        [totalRows]="totalRecords"
+        [limit]="rows"
+        [page]="page"
+        [useFilter]="true"
+        [usePagination]="true"
+
+        (onFilter)="onFilterChange($event)"
+        (onPageChange)="onPageChange($event)"
+        (onAction)="onAction($event)"
+      ></app-table>
+    }
+  </div>
+
+  <app-application-detail
+    [application]="selectedApplication!"
+    [visible]="showDetailModal"
+    (visibleChange)="showDetailModal = $event"
+  ></app-application-detail>
+</div>
