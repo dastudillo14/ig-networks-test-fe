@@ -1,3 +1,7 @@
+//NOTE: This is a test file for the TableComponent.
+//It is not a test for the TableComponent itself, but for the methods that are used in the TableComponent.
+//It is not a test for the TableComponent itself, but for the methods that are used in the TableComponent. 
+//!IMPORTANT: IT WAS CREATED BY CURSOR AI - GPT-4.1
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableComponent } from './table.component';
 import { CommonModule } from '@angular/common';
